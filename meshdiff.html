@@ -1,1 +1,74 @@
-<!doctypehtml><html lang=en><meta charset=utf-8><meta content="width=device-width,initial-scale=1,shrink-to-fit=no"name=viewport><link href=https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css rel=stylesheet crossorigin=anonymous integrity=sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh><link href=https://use.fontawesome.com/releases/v5.7.0/css/all.css rel=stylesheet crossorigin=anonymous integrity=sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ><link href=css/common.css rel=stylesheet><link href=css/project_page.css rel=stylesheet><title>MeshDiff</title><body class=bg-primary><div class="mx-auto container-fluid p-3 p-lg-5 resume-section"><nav class="fixed-top navbar navbar-custom"><a href=index.html class="btn btn-outline-light text-light unstyled mb-3"role=button><i class="fa-chevron-left fas"></i> Portfolio</a></nav><div class="mx-auto page-content"><h1 class="title-style mb-4 text-center">MeshDiff</h1><div class="embed-responsive embed-responsive-16by9 m-3"id=title-video><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"allowfullscreen frameborder=0 height=315 src=https://www.youtube.com/embed/KeFpQf2SE9U width=560></iframe></div><p>This project was done as a <a href=https://dspace.cuni.cz/handle/20.500.11956/100950>BSc thesis</a> at <a href=https://www.mff.cuni.cz/en>Charles University</a> under the supervision of <a href=https://cgg.mff.cuni.cz/~pepca/ >Josef Pelikán</a>.<h2 class=title-style>Abstract</h2><p>Visualization of the difference between two triangle meshes is useful in geometric morphometrics where the shapes of biological objects such as bones, facial symmetries and others are studied. Existing visualizations are mostly done by encoding various difference metrics into vertex color. However, this one-dimensional information is not enough to display multiple metrics at the same time. To overcome this limitation, we implemented an algorithm which employs the techniques of vector field visualization and uses clustered 3D arrows to encode the metrics. Focusing on visual appearance, we applied it in several types of visualizations in an experimental application called MeshDiff. We also conducted a user study of both existing and new visualizations to compare their performance in various use cases and investigate the possibilities for future improvement.<div class=m-4><a href=img/meshdiff/illustration/original.png><img alt="Visualization of the difference between two triangle meshes."sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"src=img/meshdiff/illustration/1846.webp srcset="img/meshdiff/illustration/1846.webp 1846w, img/meshdiff/illustration/1600.webp 1600w, img/meshdiff/illustration/1200.webp 1200w, img/meshdiff/illustration/800.webp 800w, img/meshdiff/illustration/600.webp 600w, img/meshdiff/illustration/400.webp 400w"></a><p><i>The figure above shows two triangle meshes and a visualization of their difference. First, there is basic color coding where green means that a certain area (cluster) is "larger" (further away from the center of the mesh) than in the other mesh and red means the opposite. Then there are the arrows which also encode the direction of the difference. The number of clusters is fully adjustable by the user. Click on the image to view the original.</i></div><h2 class=title-style>Links</h2><p><a href=pdfs/meshdiff_thesis.pdf class="btn btn-outline-light text-light unstyled m-1"role=button><i class="fa-file-pdf far"></i> Thesis (12 MB)</a> <a href=pdfs/meshdiff_poster.pdf class="btn btn-outline-light text-light unstyled m-1"role=button><i class="fa-file-pdf far"></i> Poster (5 MB)</a> <a href=https://github.com/honzukka/Bachelor-Thesis class="btn btn-outline-light text-light unstyled m-1"role=button><i class="fa-github fab logo-style"></i> GitHub</a><footer class=mt-4>© <span id=year>2020</span> Jan Horešovský</footer></div></div><script>document.getElementById("year").innerHTML=(new Date).getFullYear()</script>
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        
+        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+        <!-- custom CSS -->
+        <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/project_page.css">
+
+        <title>MeshDiff</title>
+    </head>
+    <body class="bg-primary">
+        <div class="container-fluid resume-section p-3 p-lg-5 mx-auto">
+            <nav class="navbar fixed-top navbar-custom">
+                <a href="index.html" class="btn btn-outline-light text-light mb-3 unstyled" role="button">
+                    <i class="fas fa-chevron-left"></i> Portfolio
+                </a>
+            </nav>
+
+            <div class="page-content mx-auto">
+                <h1 class="text-center title-style mb-4">MeshDiff</h1>
+                
+                <div class="embed-responsive embed-responsive-16by9 m-5 youtube-embed mx-auto" id="title-video">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/KeFpQf2SE9U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <p>This project was done as a <a href="https://dspace.cuni.cz/handle/20.500.11956/100950">BSc thesis</a> at <a href="https://www.mff.cuni.cz/en">Charles University</a> under the supervision of <a href="https://cgg.mff.cuni.cz/~pepca/">Josef Pelikán</a>.</p>
+
+                <h2 class="title-style">Abstract</h2>
+
+                <p>Visualization of the difference between two triangle meshes is useful in geometric morphometrics where the shapes of biological objects such as bones, facial symmetries and others are studied. Existing visualizations are mostly done by encoding various difference metrics into vertex color. However, this one-dimensional information is not enough to display multiple metrics at the same time. To overcome this limitation, we implemented an algorithm which employs the techniques of vector field visualization and uses clustered 3D arrows to encode the metrics. Focusing on visual appearance, we applied it in several types of visualizations in an experimental application called MeshDiff. We also conducted a user study of both existing and new visualizations to compare their performance in various use cases and investigate the possibilities for future improvement.</p>
+
+                <div class="m-5 text-center">
+                    <a href="img/meshdiff/illustration/original.png">
+                        <img src="img/meshdiff/illustration/1846.webp"
+                             sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"
+                             srcset="img/meshdiff/illustration/1846.webp 1846w,
+                                     img/meshdiff/illustration/1600.webp 1600w,
+                                     img/meshdiff/illustration/1200.webp 1200w,
+                                     img/meshdiff/illustration/800.webp 800w,
+                                     img/meshdiff/illustration/600.webp 600w,
+                                     img/meshdiff/illustration/400.webp 400w"
+                             alt="Visualization of the difference between two triangle meshes.">
+                    </a>
+                    <p class="text-left"><i>The figure above shows two triangle meshes and a visualization of their difference. First, there is basic color coding where green means that a certain area (cluster) is "larger" (further away from the center of the mesh) than in the other mesh and red means the opposite. Then there are the arrows which also encode the direction of the difference. The number of clusters is fully adjustable by the user. Click on the image to view the original.</i></p>
+                </div>
+
+                <h2 class="title-style">Links</h2>
+
+                <p>
+                    <a href="pdfs/meshdiff_thesis.pdf" class="btn btn-outline-light text-light unstyled m-1" role="button"><i class="far fa-file-pdf"></i> Thesis (12 MB)</a>
+                    <a href="pdfs/meshdiff_poster.pdf" class="btn btn-outline-light text-light unstyled m-1" role="button"><i class="far fa-file-pdf"></i> Poster (5 MB)</a>
+                    <a href="https://github.com/honzukka/Bachelor-Thesis" class="btn btn-outline-light text-light unstyled m-1" role="button"><i class="fab fa-github logo-style"></i> GitHub</a>
+                </p>
+                
+                <footer class="mt-4">
+                    &copy; <span id="year">2020</span> Jan Horešovský
+                </footer>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById("year").innerHTML = new Date().getFullYear();
+        </script>
+    </body>
+</html>

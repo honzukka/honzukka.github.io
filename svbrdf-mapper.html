@@ -1,1 +1,130 @@
-<!doctypehtml><html lang=en><meta charset=utf-8><meta content="width=device-width,initial-scale=1,shrink-to-fit=no"name=viewport><link href=https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css rel=stylesheet crossorigin=anonymous integrity=sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh><link href=https://use.fontawesome.com/releases/v5.7.0/css/all.css rel=stylesheet crossorigin=anonymous integrity=sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ><link href=css/common.css rel=stylesheet><link href=css/project_page.css rel=stylesheet><title>SVBRDF Mapper</title><body class=bg-primary><div class="mx-auto container-fluid p-3 p-lg-5 resume-section"><nav class="fixed-top navbar navbar-custom"><a href=index.html class="mb-3 btn btn-outline-light text-light unstyled"role=button><i class="fa-chevron-left fas"></i> Portfolio</a></nav><div class="mx-auto page-content"><h1 class="title-style text-center">SVBRDF Mapper</h1><div class="embed-responsive embed-responsive-16by9 mt-3 mx-3"id=title-video><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"allowfullscreen height=315 src=https://www.youtube.com/embed/vnJRswsbSrc width=560 class=embed-responsive-item></iframe></div><p class="text-right mb-4"><i>Video can be looped by right-clicking.</i><p>This project was done at <a href=https://www.aalto.fi/en>Aalto University</a> under the supervision of <a href=https://users.aalto.fi/~lehtinj7/ >Jaakko Lehtinen</a>. Source code is not available.<h2 class=title-style>Motivation</h2><p>A paper by <a href=https://mediatech.aalto.fi/publications/graphics/TwoShotSVBRDF/ >Aittala et al. (2015)</a> provides a way of capturing SVBRDF parameters of a repetetive surface using a mobile phone camera.<p>Unfortunately, the resulting parameter format is non-standard and unsupported by common rendering software, such as Unity or Blender. This makes the material capture difficult to use in a content creation pipeline.<div class=m-4><a href=img/svbrdf_mapper/motivation/original.png><img alt="Illustration of the motivation"sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"src=img/svbrdf_mapper/motivation/800.webp srcset="img/svbrdf_mapper/motivation/800.webp 800w, img/svbrdf_mapper/motivation/600.webp 600w, img/svbrdf_mapper/motivation/400.webp 400w"></a><p class=text-right><i>Click on the image to view the original.</i></div><p>The goal of this project is therefore to find a way to convert the custom BRDF parameters to a standard set of parameters, in our case more specifically to Anisotropic GGX parameters.<h2 class=title-style>Results</h2><p>For each material separately, our program finds Anisotropic GGX parameters which give an appearance that is sufficiently close to the reference. These parameters can be directly imported into Blender and used with a correctly configured Anisotropic GGX shader.<div class="mx-2 row"><div class="mb-3 col-sm-6"><a href=img/svbrdf_mapper/result_final/original.png><img alt="Rendering of the optimized Anisotropic GGX parameters."sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"src=img/svbrdf_mapper/result_final/768.webp srcset="img/svbrdf_mapper/result_final/768.webp 768w, img/svbrdf_mapper/result_final/600.webp 600w, img/svbrdf_mapper/result_final/400.webp 400w"></a></div><div class="mb-3 col-sm-6"><a href=img/svbrdf_mapper/result_ref/original.png><img alt="Rendering of the reference Aittala parameters."sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"src=img/svbrdf_mapper/result_ref/768.webp srcset="img/svbrdf_mapper/result_ref/768.webp 768w, img/svbrdf_mapper/result_ref/600.webp 600w, img/svbrdf_mapper/result_ref/400.webp 400w"></a></div><span class="d-block d-sm-none"><p><i>Upper figure shows a rendering of optimized Anisotropic GGX parameters. Lower figure shows the Aittala reference. Click on one of the images to view the original.</i></span><span class="d-none d-sm-block"><p><i>Figure on the left shows a rendering of optimized Anisotropic GGX parameters. Figure on the right shows the Aittala reference. Click on one of the images to view the original.</i></span><p><i>Also see the video at the <a href=#title-video>top of this page</a>.</i></div><h2 class=title-style>Technical Details</h2><p>The core of the program is implemented in TensorFlow and is based on non-linear optimization of the BRDF parameters. For each material, the optimization is run separately in order to ensure the best possible matching is found. Here is an overview of the whole process:<div class=m-4><a href=img/svbrdf_mapper/schema/original.png><img alt="Illustration schema of the implementation."sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"src=img/svbrdf_mapper/schema/1197.webp srcset="img/svbrdf_mapper/schema/1197.webp 1197w, img/svbrdf_mapper/schema/800.webp 800w, img/svbrdf_mapper/schema/600.webp 600w, img/svbrdf_mapper/schema/400.webp 400w"></a><p class=text-right><i>Click on the image to view the original.</i></div><p><b>The main problem is that the mapping cannot be uniquely determined</b> - for one set of Aittala parameters there can be many sets of Anisotropic GGX parameters which give the same appearance under a given lighting condition. We solve the problem by trying to match the parameters under many lighting conditions at once. Here is a more thorough breakdown of our approach:<ul><li>First, initial Anisotropic GGX parameters are created as a deterministic guess function of the Aittala parameters.<li>These parameters are used to render pairs of reference and guess images under more than 100 different lighting conditions.<li>Loss function is computed as an L2 distance between all reference images and all guess images combined.<li>A finite difference of the guess images is added to the loss function to ensure that the optimizer makes smooth changes. This term is attenuated in final stages of the optimization in order to restore sharpness.<li>After an update of the Anisotropic GGX parameters is computed, steps 2.-5. are repeated until the stopping condition is reached.</ul><p>Here is a visualization of the optimization process:<div class="embed-responsive embed-responsive-16by9 m-3"><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"allowfullscreen height=315 src=https://www.youtube.com/embed/c_SDihVpCWI width=560></iframe></div><p><i>These images have been rendered by using a fixed, centered point light and Anisotropic GGX parameters at various epochs.</i><footer class=mt-4>© <span id=year>2020</span> Jan Horešovský</footer></div></div><script>document.getElementById("year").innerHTML=(new Date).getFullYear()</script>
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        
+        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+        <!-- custom CSS -->
+        <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/project_page.css">
+
+        <title>SVBRDF Mapper</title>
+    </head>
+    <body class="bg-primary">
+        <div class="container-fluid resume-section p-3 p-lg-5 mx-auto">
+            <nav class="navbar fixed-top navbar-custom">
+                <a href="index.html" class="btn btn-outline-light text-light mb-3 unstyled" role="button">
+                    <i class="fas fa-chevron-left"></i> Portfolio
+                </a>
+            </nav>
+
+            <div class="page-content mx-auto">
+                <h1 class="text-center title-style">SVBRDF Mapper</h1>
+                <div class="embed-responsive embed-responsive-16by9 mx-5 mt-5 youtube-embed mx-auto" id="title-video">
+                    <iframe class="embed-responsive-item" width="560" height="315" src="https://www.youtube.com/embed/vnJRswsbSrc" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <p class="text-center mb-4"><i>Video can be looped by right-clicking.</i></p>
+                
+                <p>This project was done at <a href="https://www.aalto.fi/en">Aalto University</a> under the supervision of <a href="https://users.aalto.fi/~lehtinj7/">Jaakko Lehtinen</a>. Source code is not available.</p>
+
+                <h2 class="title-style">Motivation</h2>
+                <p>A paper by <a href="https://mediatech.aalto.fi/publications/graphics/TwoShotSVBRDF/">Aittala et al. (2015)</a> provides a way of capturing SVBRDF parameters of a repetetive surface using a mobile phone camera.</p>
+                <p>Unfortunately, the resulting parameter format is non-standard and unsupported by common rendering software, such as Unity or Blender. This makes the material capture difficult to use in a content creation pipeline.</p>
+
+                <div class="m-5 text-center">
+                    <a href="img/svbrdf_mapper/motivation/original.png">
+                        <img src="img/svbrdf_mapper/motivation/800.webp"
+                             sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"
+                             srcset="img/svbrdf_mapper/motivation/800.webp 800w,
+                                     img/svbrdf_mapper/motivation/600.webp 600w,
+                                     img/svbrdf_mapper/motivation/400.webp 400w"
+                             alt="Illustration of the motivation">
+                    </a>
+                    <p><i>Click on the image to view the original.</i></p>
+                </div>
+
+                <p>The goal of this project is therefore to find a way to convert the custom BRDF parameters to a standard set of parameters, in our case more specifically to Anisotropic GGX parameters.</p>
+
+                <h2 class="title-style">Results</h2>
+                <p>For each material separately, our program finds Anisotropic GGX parameters which give an appearance that is sufficiently close to the reference. These parameters can be directly imported into Blender and used with a correctly configured Anisotropic GGX shader.</p>
+
+                <div class="row m-5 youtube-embed mx-auto">
+                    <div class="col-sm-6 mb-3">
+                        <a href="img/svbrdf_mapper/result_final/original.png">
+                            <img src="img/svbrdf_mapper/result_final/768.webp"
+                                 sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"
+                                 srcset="img/svbrdf_mapper/result_final/768.webp 768w,
+                                         img/svbrdf_mapper/result_final/600.webp 600w,
+                                         img/svbrdf_mapper/result_final/400.webp 400w"
+                                 alt="Rendering of the optimized Anisotropic GGX parameters.">
+                        </a>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <a href="img/svbrdf_mapper/result_ref/original.png">
+                            <img src="img/svbrdf_mapper/result_ref/768.webp"
+                                 sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"
+                                 srcset="img/svbrdf_mapper/result_ref/768.webp 768w,
+                                         img/svbrdf_mapper/result_ref/600.webp 600w,
+                                         img/svbrdf_mapper/result_ref/400.webp 400w"
+                                 alt="Rendering of the reference Aittala parameters.">
+                        </a>
+                    </div>
+                    <span class="d-block d-sm-none">
+                        <p><i>Upper figure shows a rendering of optimized Anisotropic GGX parameters. Lower figure shows the Aittala reference. Click on one of the images to view the original.</i></p>
+                    </span>
+                    <span class="d-none d-sm-block">
+                        <p><i>Figure on the left shows a rendering of optimized Anisotropic GGX parameters. Figure on the right shows the Aittala reference. Click on one of the images to view the original.</i></p>
+                    </span>
+                    <p><i>Also see the video at the <a href="#title-video">top of this page</a>.</i></p>
+                </div>                
+
+                <h2 class="title-style">Technical Details</h2>
+                <p>The core of the program is implemented in TensorFlow and is based on non-linear optimization of the BRDF parameters. For each material, the optimization is run separately in order to ensure the best possible matching is found. Here is an overview of the whole process:</p>
+
+                <div class="m-5 text-center">
+                    <a href="img/svbrdf_mapper/schema/original.png">
+                        <img src="img/svbrdf_mapper/schema/1197.webp"
+                             sizes="(min-width: 1400px) 50vw, (min-width: 800px) 60vw, 100vw"
+                             srcset="img/svbrdf_mapper/schema/1197.webp 1197w,
+                                     img/svbrdf_mapper/schema/800.webp 800w,
+                                     img/svbrdf_mapper/schema/600.webp 600w,
+                                     img/svbrdf_mapper/schema/400.webp 400w"
+                             alt="Illustration schema of the implementation.">
+                    </a>
+                    <p><i>Click on the image to view the original.</i></p>
+                </div>
+
+                <p><b>The main problem is that the mapping cannot be uniquely determined</b> - for one set of Aittala parameters there can be many sets of Anisotropic GGX parameters which give the same appearance under a given lighting condition. We solve the problem by trying to match the parameters under many lighting conditions at once. Here is a more thorough breakdown of our approach:</p>
+                <ul>
+                    <li>First, initial Anisotropic GGX parameters are created as a deterministic guess function of the Aittala parameters.</li>
+                    <li>These parameters are used to render pairs of reference and guess images under more than 100 different lighting conditions. </li>
+                    <li>Loss function is computed as an L2 distance between all reference images and all guess images combined.</li>
+                    <li>A finite difference of the guess images is added to the loss function to ensure that the optimizer makes smooth changes. This term is attenuated in final stages of the optimization in order to restore sharpness.</li>
+                    <li>After an update of the Anisotropic GGX parameters is computed, steps 2.-5. are repeated until the stopping condition is reached.</li>
+                </ul>
+
+                <p>Here is a visualization of the optimization process:</p>
+
+                <div class="embed-responsive embed-responsive-16by9 mt-5 mx-5 youtube-embed mx-auto">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/c_SDihVpCWI" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <p class="text-center"><i>These images have been rendered by using a fixed, centered point light and Anisotropic GGX parameters at various epochs.</i></p>
+            
+                <footer class="mt-4">
+                    &copy; <span id="year">2020</span> Jan Horešovský
+                </footer>
+            </div>
+        </div>
+        
+        <script>
+            document.getElementById("year").innerHTML = new Date().getFullYear();
+        </script>
+    </body>
+</html>
