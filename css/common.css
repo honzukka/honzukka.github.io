@@ -1,0 +1,49 @@
+body {
+    color: #959595;
+}
+
+a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+a.unstyled {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+a.unstyled:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+p.nospace {
+    margin: 2px;
+}
+
+.bg-primary {
+    background-color: rgb(20, 20, 20) !important;
+}
+
+.title-style {
+    color: rgb(255, 255, 255);
+}
+
+.logo-style {
+    color: rgb(255, 255, 255);
+}
+
+.btn.btn-outline-light:active,
+.btn.btn-outline-light:hover,
+.btn.btn-outline-light:focus {
+  background-color: rgb(51, 51, 51) !important;
+}
+
+#webgl {
+    width: 100%;
+}
