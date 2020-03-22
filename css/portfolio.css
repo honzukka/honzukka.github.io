@@ -17,6 +17,10 @@
         width: var(--sidebar-width);
         height: 100vh;
     }
+
+    .project-pointer {
+        visibility: hidden;
+    }
 }
 
 .img-profile {
