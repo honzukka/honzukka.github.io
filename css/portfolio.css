@@ -1,56 +1,56 @@
 :root {
-    --sidebar-width: 25rem;
+  --sidebar-width: 25rem;
 }
 
 @media (min-width: 992px) and (min-height: 650px) {
-    body {
-        padding-left: var(--sidebar-width);
-    }
+  body {
+    padding-left: var(--sidebar-width);
+  }
 
-    .side-bio {
-        text-align: left;
-        position: fixed;
-        top: 0;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        width: var(--sidebar-width);
-        height: 100vh;
-    }
+  .side-bio {
+    text-align: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar-width);
+    height: 100vh;
+  }
 
-    .project-pointer {
-        visibility: hidden;
-    }
+  .project-pointer {
+    visibility: hidden;
+  }
 }
 
 .img-profile {
-    max-width: 7rem;
+  max-width: 15rem;
 }
 
 .item-thumbnail {
-    max-width: 15rem;
-    padding: 0.2rem;
-    width: 100%;
+  max-width: 15rem;
+  padding: 0.2rem;
+  width: 100%;
 }
 
 /* --------------------- */
 @media (min-width: 1400px) {
-    .item-style {
-        max-width: 50vw;
-    }
+  .item-style {
+    max-width: 50vw;
+  }
 }
-  
+
 @media (min-width: 800px) {
-    .item-style {
-        margin-top: 3rem;
-        max-width: 75vw;
-    }
+  .item-style {
+    margin-top: 3rem;
+    max-width: 75vw;
+  }
 }
 
 @media (max-width: 799px) {
-    .item-style {
-        margin-top: 4rem;
-        max-width: 100vw;
-    }
+  .item-style {
+    margin-top: 4rem;
+    max-width: 100vw;
+  }
 }
 /* --------------------- */
